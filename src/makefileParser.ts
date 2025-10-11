@@ -18,18 +18,23 @@ export function parseMakefile(filePath: string): MakeTarget[] {
     const content = fs.readFileSync(filePath, 'utf-8');
     const lines = content.split('\n');
 
-    let previousComment = '';
+    let commentLines: string[] = [];
 
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i].trim();
 
+        if (!line) {
+            commentLines = [];
+            continue;
+        }
+
         if (line.startsWith('#')) {
-            previousComment = line.substring(1).trim();
+            commentLines.push(line.substring(1).trim());
             continue;
         }
 
         if (line.startsWith('.PHONY:')) {
-            previousComment = '';
+            commentLines = [];
             continue;
         }
 
@@ -37,16 +42,21 @@ export function parseMakefile(filePath: string): MakeTarget[] {
         if (targetMatch && !line.startsWith('\t')) {
             const targetName = targetMatch[1];
             if (!targetName.startsWith('.') && targetName !== 'PHONY') {
+                let description = commentLines.join(' ');
+                const inlineCommentMatch = line.match(/#\s*(.+)$/);
+                if (inlineCommentMatch) {
+                    description = inlineCommentMatch[1].trim();
+                }
                 targets.push({
                     name: targetName,
-                    description: previousComment || undefined,
+                    description: description || undefined,
                     file: filePath,
                     isPattern: targetName.includes('%')
                 });
             }
-            previousComment = '';
-        } else if (line && !line.startsWith('#')) {
-            previousComment = '';
+            commentLines = [];
+        } else if (!line.startsWith('#')) {
+            commentLines = [];
         }
     }
 
