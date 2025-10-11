@@ -38,21 +38,6 @@ export function activate(context: vscode.ExtensionContext) {
         }
     }, null, context.subscriptions);
 
-    vscode.window.onDidChangeTextEditorSelection(event => {
-        const editor = event.textEditor;
-        const basename = editor.document.uri.path.split('/').pop()?.toLowerCase();
-        if (basename === 'makefile' || basename === 'makefile') {
-            const position = event.selections[0].active;
-            const targetName = decorationProvider.getTargetAtLine(position.line);
-            if (targetName && event.kind === vscode.TextEditorSelectionChangeKind.Mouse) {
-                const lineText = editor.document.lineAt(position.line).text;
-                if (position.character === 0 || (position.character < 3 && lineText.startsWith(targetName))) {
-                    vscode.commands.executeCommand('makeup.runTargetByName', targetName);
-                }
-            }
-        }
-    }, null, context.subscriptions);
-
     context.subscriptions.push(
         vscode.commands.registerCommand('makeup.refreshTargets', () => {
             targetsProvider.refresh();

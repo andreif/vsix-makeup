@@ -43,7 +43,7 @@ export class MakefileDecorationProvider {
                     const range = new vscode.Range(i, 0, i, 0);
                     const decoration: vscode.DecorationOptions = {
                         range,
-                        hoverMessage: `Click to run make ${targetName}`
+                        hoverMessage: `make ${targetName}`
                     };
                     decorations.push(decoration);
                 }
