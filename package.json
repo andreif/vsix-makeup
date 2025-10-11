@@ -1,0 +1,70 @@
+{
+  "name": "makeup-makefile-runner",
+  "displayName": "MakeUp - Makefile Runner",
+  "description": "Execute Makefile targets with a click",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onView:makeupTargets",
+    "workspaceContains:**/Makefile",
+    "workspaceContains:**/makefile"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "views": {
+      "explorer": [
+        {
+          "id": "makeupTargets",
+          "name": "Make Targets",
+          "icon": "$(tools)",
+          "contextualTitle": "Make Targets"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "makeup.runTarget",
+        "title": "Run Make Target",
+        "icon": "$(play)"
+      },
+      {
+        "command": "makeup.refreshTargets",
+        "title": "Refresh Make Targets",
+        "icon": "$(refresh)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "makeup.refreshTargets",
+          "when": "view == makeupTargets",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "makeup.runTarget",
+          "when": "view == makeupTargets && viewItem == makeTarget",
+          "group": "inline"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.80.0",
+    "typescript": "^5.0.0"
+  }
+}
+
