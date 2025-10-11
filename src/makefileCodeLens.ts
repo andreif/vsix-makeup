@@ -22,7 +22,7 @@ export class MakefileCodeLensProvider implements vscode.CodeLensProvider {
                 continue;
             }
 
-            const targetMatch = line.match(/^([a-zA-Z0-9_-]+):/);
+            const targetMatch = line.match(/^([a-zA-Z0-9_%-]+):/);
             if (targetMatch && !line.startsWith('\t')) {
                 const targetName = targetMatch[1];
                 if (!targetName.startsWith('.') && targetName !== 'PHONY') {

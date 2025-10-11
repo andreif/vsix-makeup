@@ -74,7 +74,7 @@ export function activate(context: vscode.ExtensionContext) {
                 let targetLine = 0;
                 for (let i = 0; i < lines.length; i++) {
                     const line = lines[i];
-                    const targetMatch = line.match(/^([a-zA-Z0-9_-]+):/);
+                    const targetMatch = line.match(/^([a-zA-Z0-9_%-]+):/);
                     if (targetMatch && targetMatch[1] === target.name && !line.startsWith('\t')) {
                         targetLine = i;
                         break;
