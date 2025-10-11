@@ -7,6 +7,7 @@ Execute Makefile targets with a click in Cursor/VS Code.
 - Automatically discovers Makefiles in your workspace
 - Displays all make targets in a sidebar view
 - Click any target to run it in the terminal
+- **CodeLens inline buttons** - Run buttons appear directly in Makefile editor
 - Shows target descriptions from comments
 - Auto-refreshes when Makefiles change
 
@@ -32,7 +33,7 @@ This project uses mise for Node.js version management (Node 22).
 ## Usage
 
 1. Open a workspace containing a Makefile
-2. Find the "Make Targets" view in the Explorer sidebar
-3. Click on any target to execute it
+2. **Sidebar view**: Find the "Make Targets" view in the Explorer sidebar and click any target
+3. **Inline buttons**: Open the Makefile in the editor - clickable "▶ Run" buttons appear above each target
 4. Use the refresh button to reload targets
 
