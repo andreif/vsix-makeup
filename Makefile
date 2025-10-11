@@ -1,24 +1,28 @@
 .PHONY: install compile watch clean package dev test
 
 install:
-	npm install
+	mise exec -- npm install
 
 compile:
-	npm run compile
+	mise exec -- npm run compile
 
 watch:
-	npm run watch
+	mise exec -- npm run watch
 
 clean:
 	rm -rf out node_modules *.vsix
 
-package:
-	npm install -g @vscode/vsce
-	vsce package
+package: compile package-clean
+	mise exec -- npx --yes @vscode/vsce package --allow-missing-repository --no-dependencies
+
+package-clean:
+	rm -f *.vsix
+
+package-install: package
+	cursor --install-extension *.vsix
 
 dev:
-	npm run watch
+	mise exec -- npm run watch
 
 test: compile
 	echo "No tests configured yet"
-
