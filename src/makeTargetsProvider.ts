@@ -11,7 +11,7 @@ class MakeTargetItem extends vscode.TreeItem {
         this.tooltip = target.description || `Run make ${target.name}`;
         this.description = target.description;
         this.contextValue = 'makeTarget';
-        this.iconPath = new vscode.ThemeIcon('tools');
+        this.iconPath = new vscode.ThemeIcon('play');
         this.command = {
             command: 'makeup.runTarget',
             title: 'Run Target',
