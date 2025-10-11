@@ -25,7 +25,7 @@ export class MakefileCodeLensProvider implements vscode.CodeLensProvider {
             const targetMatch = line.match(/^([a-zA-Z0-9_%-]+):/);
             if (targetMatch && !line.startsWith('\t')) {
                 const targetName = targetMatch[1];
-                if (!targetName.startsWith('.') && targetName !== 'PHONY') {
+                if (!targetName.startsWith('.') && targetName !== 'PHONY' && !targetName.includes('%')) {
                     const range = new vscode.Range(i, 0, i, line.length);
                     const codeLens = new vscode.CodeLens(range, {
                         title: '▶ Run',

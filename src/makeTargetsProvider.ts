@@ -11,8 +11,8 @@ class MakeTargetItem extends vscode.TreeItem {
         super(target.name, collapsibleState);
         this.tooltip = "Jump to";
         this.description = target.description;
-        this.contextValue = 'makeTarget';
-        this.iconPath = iconPath;
+        this.contextValue = target.isPattern ? 'makePatternTarget' : 'makeTarget';
+        this.iconPath = target.isPattern ? new vscode.ThemeIcon('symbol-variable') : iconPath;
         this.command = {
             command: 'makeup.jumpToTarget',
             title: 'Jump to Target',

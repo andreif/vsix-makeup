@@ -5,6 +5,7 @@ export interface MakeTarget {
     name: string;
     description?: string;
     file: string;
+    isPattern?: boolean;
 }
 
 export function parseMakefile(filePath: string): MakeTarget[] {
@@ -39,7 +40,8 @@ export function parseMakefile(filePath: string): MakeTarget[] {
                 targets.push({
                     name: targetName,
                     description: previousComment || undefined,
-                    file: filePath
+                    file: filePath,
+                    isPattern: targetName.includes('%')
                 });
             }
             previousComment = '';

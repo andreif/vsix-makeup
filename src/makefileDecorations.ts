@@ -38,7 +38,7 @@ export class MakefileDecorationProvider {
             const targetMatch = line.match(/^([a-zA-Z0-9_%-]+):/);
             if (targetMatch && !line.startsWith('\t')) {
                 const targetName = targetMatch[1];
-                if (!targetName.startsWith('.') && targetName !== 'PHONY') {
+                if (!targetName.startsWith('.') && targetName !== 'PHONY' && !targetName.includes('%')) {
                     this.targetMap.set(i, targetName);
                     const range = new vscode.Range(i, 0, i, 0);
                     const decoration: vscode.DecorationOptions = {
