@@ -9,7 +9,7 @@ class MakeTargetItem extends vscode.TreeItem {
         iconPath: vscode.Uri
     ) {
         super(target.name, collapsibleState);
-        this.tooltip = target.description || `Run make ${target.name}`;
+        this.tooltip = "Jump to";
         this.description = target.description;
         this.contextValue = 'makeTarget';
         this.iconPath = iconPath;

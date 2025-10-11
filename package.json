@@ -29,7 +29,7 @@
     "commands": [
       {
         "command": "makeup.runTarget",
-        "title": "Run Make Target",
+        "title": "Run",
         "icon": "$(play)"
       },
       {
