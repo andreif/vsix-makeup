@@ -37,6 +37,10 @@
         "title": "Run Make Target by Name"
       },
       {
+        "command": "makeup.jumpToTarget",
+        "title": "Jump to Make Target"
+      },
+      {
         "command": "makeup.refreshTargets",
         "title": "Refresh Make Targets",
         "icon": "$(refresh)"

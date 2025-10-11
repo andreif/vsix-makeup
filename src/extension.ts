@@ -64,6 +64,31 @@ export function activate(context: vscode.ExtensionContext) {
         })
     );
 
+    context.subscriptions.push(
+        vscode.commands.registerCommand('makeup.jumpToTarget', async (target: any) => {
+            if (target && target.file && target.name) {
+                const document = await vscode.workspace.openTextDocument(target.file);
+                const text = document.getText();
+                const lines = text.split('\n');
+
+                let targetLine = 0;
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i];
+                    const targetMatch = line.match(/^([a-zA-Z0-9_-]+):/);
+                    if (targetMatch && targetMatch[1] === target.name && !line.startsWith('\t')) {
+                        targetLine = i;
+                        break;
+                    }
+                }
+
+                const editor = await vscode.window.showTextDocument(document);
+                const position = new vscode.Position(targetLine, 0);
+                editor.selection = new vscode.Selection(position, position);
+                editor.revealRange(new vscode.Range(position, position), vscode.TextEditorRevealType.InCenter);
+            }
+        })
+    );
+
     const watcher = vscode.workspace.createFileSystemWatcher('**/[Mm]akefile');
     watcher.onDidChange(() => {
         targetsProvider.refresh();

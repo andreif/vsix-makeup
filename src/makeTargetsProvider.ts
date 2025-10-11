@@ -14,9 +14,9 @@ class MakeTargetItem extends vscode.TreeItem {
         this.contextValue = 'makeTarget';
         this.iconPath = iconPath;
         this.command = {
-            command: 'makeup.runTarget',
-            title: 'Run Target',
-            arguments: [this]
+            command: 'makeup.jumpToTarget',
+            title: 'Jump to Target',
+            arguments: [this.target]
         };
     }
 }
