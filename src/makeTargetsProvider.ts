@@ -5,13 +5,14 @@ import { parseMakefile, findMakefiles, MakeTarget } from './makefileParser';
 class MakeTargetItem extends vscode.TreeItem {
     constructor(
         public readonly target: MakeTarget,
-        public readonly collapsibleState: vscode.TreeItemCollapsibleState
+        public readonly collapsibleState: vscode.TreeItemCollapsibleState,
+        iconPath: vscode.Uri
     ) {
         super(target.name, collapsibleState);
         this.tooltip = target.description || `Run make ${target.name}`;
         this.description = target.description;
         this.contextValue = 'makeTarget';
-        this.iconPath = new vscode.ThemeIcon('play');
+        this.iconPath = iconPath;
         this.command = {
             command: 'makeup.runTarget',
             title: 'Run Target',
@@ -44,8 +45,12 @@ export class MakeTargetsProvider implements vscode.TreeDataProvider<MakefileItem
     readonly onDidChangeTreeData: vscode.Event<MakefileItem | MakeTargetItem | undefined | null | void> = this._onDidChangeTreeData.event;
 
     private makefiles: Map<string, MakeTarget[]> = new Map();
+    private iconPath: vscode.Uri;
 
-    constructor() {
+    constructor(context: vscode.ExtensionContext) {
+        this.iconPath = vscode.Uri.file(
+            path.join(context.extensionPath, 'resources', 'play-icon.svg')
+        );
         this.loadMakefiles();
     }
 
@@ -86,7 +91,7 @@ export class MakeTargetsProvider implements vscode.TreeDataProvider<MakefileItem
             if (this.makefiles.size === 1) {
                 const [, targets] = Array.from(this.makefiles.entries())[0];
                 return Promise.resolve(
-                    targets.map(target => new MakeTargetItem(target, vscode.TreeItemCollapsibleState.None))
+                    targets.map(target => new MakeTargetItem(target, vscode.TreeItemCollapsibleState.None, this.iconPath))
                 );
             }
 
@@ -99,7 +104,7 @@ export class MakeTargetsProvider implements vscode.TreeDataProvider<MakefileItem
 
         if (element instanceof MakefileItem) {
             return Promise.resolve(
-                element.targets.map(target => new MakeTargetItem(target, vscode.TreeItemCollapsibleState.None))
+                element.targets.map(target => new MakeTargetItem(target, vscode.TreeItemCollapsibleState.None, this.iconPath))
             );
         }
 

@@ -4,7 +4,7 @@ import { MakefileCodeLensProvider } from './makefileCodeLens';
 import { MakefileDecorationProvider } from './makefileDecorations';
 
 export function activate(context: vscode.ExtensionContext) {
-    const targetsProvider = new MakeTargetsProvider();
+    const targetsProvider = new MakeTargetsProvider(context);
     const codeLensProvider = new MakefileCodeLensProvider();
     const decorationProvider = new MakefileDecorationProvider(context);
 
