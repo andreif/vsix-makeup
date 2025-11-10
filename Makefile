@@ -9,14 +9,14 @@ compile:
 watch:
 	mise exec -- npm run watch
 
-clean:
-	rm -rf out node_modules *.vsix
+clean: clean-package
+	rm -fr out node_modules
 
-package: compile package-clean
-	mise exec -- npx --yes @vscode/vsce package --allow-missing-repository --no-dependencies
-
-package-clean:
+clean-package:
 	rm -f *.vsix
+
+package: compile clean-package
+	mise exec -- npx --yes @vscode/vsce package --allow-missing-repository --no-dependencies
 
 package-install: package
 	cursor --install-extension *.vsix
