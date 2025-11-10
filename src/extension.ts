@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as path from 'path';
 import { MakeTargetsProvider } from './makeTargetsProvider';
 import { MakefileCodeLensProvider } from './makefileCodeLens';
 import { MakefileDecorationProvider } from './makefileDecorations';
@@ -45,11 +46,21 @@ export function activate(context: vscode.ExtensionContext) {
     );
 
     context.subscriptions.push(
-        vscode.commands.registerCommand('makeup.runTarget', async (target) => {
-            if (target && target.label) {
+        vscode.commands.registerCommand('makeup.runTarget', async (targetItem: any) => {
+            let target: any = null;
+            if (targetItem && targetItem.target) {
+                target = targetItem.target;
+            } else if (targetItem && targetItem.name) {
+                target = targetItem;
+            }
+
+            if (target && target.name && target.file) {
+                const makefilePath = target.file;
+                const makefileDir = path.dirname(makefilePath);
+                const targetName = target.name;
                 const terminal = vscode.window.createTerminal('Make');
                 terminal.show();
-                terminal.sendText(`make ${target.label}`);
+                terminal.sendText(`cd "${makefileDir}" && make ${targetName}`);
             }
         })
     );
@@ -57,9 +68,18 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
         vscode.commands.registerCommand('makeup.runTargetByName', async (targetName: string) => {
             if (targetName) {
-                const terminal = vscode.window.createTerminal('Make');
-                terminal.show();
-                terminal.sendText(`make ${targetName}`);
+                const editor = vscode.window.activeTextEditor;
+                if (editor) {
+                    const makefilePath = editor.document.uri.fsPath;
+                    const makefileDir = path.dirname(makefilePath);
+                    const terminal = vscode.window.createTerminal('Make');
+                    terminal.show();
+                    terminal.sendText(`cd "${makefileDir}" && make ${targetName}`);
+                } else {
+                    const terminal = vscode.window.createTerminal('Make');
+                    terminal.show();
+                    terminal.sendText(`make ${targetName}`);
+                }
             }
         })
     );
